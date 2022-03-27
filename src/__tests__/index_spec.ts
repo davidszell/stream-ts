@@ -1,3 +1,4 @@
+import { number } from 'yargs';
 import Stream from '../';
 
 describe('Stream', () => {
@@ -203,14 +204,14 @@ describe('Stream', () => {
     it('calls filter only until first item is found when using first', () => {
       const filterMock = jest.fn(() => true);
       const stream = Stream.fromArray([1, 2, 3]);
-      const filtered = stream.filter(filterMock).first();
+      stream.filter(filterMock).first();
       expect(filterMock).toHaveBeenCalledTimes(1);
     });
 
     it('calls map only until first item is found when using first', () => {
       const mapMock = jest.fn(() => 1);
       const stream = Stream.fromArray([1, 2, 3]);
-      const mapped = stream.map(mapMock).first();
+      stream.map(mapMock).first();
       expect(mapMock).toHaveBeenCalledTimes(1);
     });
 
@@ -218,12 +219,31 @@ describe('Stream', () => {
       const evenFilterMock = jest.fn(item => item % 2 === 0);
       const divisibleBy3FilterMock = jest.fn(item => item % 3 === 0);
       const stream = Stream.fromArray([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-      const filtered = stream
+      stream
         .filter(evenFilterMock)
         .filter(divisibleBy3FilterMock)
         .first();
       expect(evenFilterMock).toHaveBeenCalledTimes(6);
       expect(divisibleBy3FilterMock).toHaveBeenCalledTimes(3);
+    });
+  });
+
+  describe('types', () => {
+    it('it is set when created', () => {
+      const stream = new Stream(1);
+      expect(typeof stream.first()).toBe('number');
+    });
+
+    it('it is overriden when mapped', () => {
+      const stream = new Stream(1);
+      const mapped = stream.map(item => item.toString());
+      expect(typeof mapped.first()).toBe('string');
+    });
+
+    it('it is unchanged when filtered', () => {
+      const stream = Stream.fromArray([1, 2, 3]);
+      const filtered = stream.filter(item => item > 1);
+      expect(typeof filtered.first()).toEqual(typeof stream.first());
     });
   });
 });

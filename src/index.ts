@@ -1,8 +1,8 @@
-class Stream {
-  private head: any;
+class Stream<Type = any> {
+  private head: Type;
   private generator: () => Stream;
 
-  constructor(head: any = null, generator: () => Stream = () => new Stream()) {
+  constructor(head: Type = null, generator: () => Stream = () => new Stream()) {
     this.head = head;
     this.generator = generator;
   }
@@ -11,7 +11,7 @@ class Stream {
    * @returns First item of the stream.
    * @throws {Error} If stream is empty.
    */
-  first(): any {
+  first(): Type {
     if (this.head == null) {
       throw new Error('Stream is empty');
     }
@@ -32,8 +32,8 @@ class Stream {
    * 
    * @returns Array of stream items.
    */ 
-  toArray(): any[] {
-    let result: any[] = [];
+  toArray(): Type[] {
+    let result: Type[] = [];
     let stream: Stream = this;
     while (!stream.isEmpty()) {
       result.push(stream.head);
@@ -48,7 +48,7 @@ class Stream {
    * @param predicate Predicate function.
    * @returns Filtered stream.
    */
-  filter(predicate: (item: any) => boolean): Stream {
+  filter(predicate: (item: Type) => boolean): Stream<Type> {
     if (this.isEmpty()) {
       return this;
     }
@@ -66,9 +66,9 @@ class Stream {
    * @param mapper Mapper function.
    * @returns Mapped stream.
    */
-  map(mapper: (item: any) => any): Stream {
+  map<T>(mapper: (item: Type) => T): Stream<T> {
     if (this.isEmpty()) {
-      return this;
+      return new Stream<T>();
     }
 
     return new Stream(mapper(this.head), () => this.generator().map(mapper));
@@ -80,7 +80,7 @@ class Stream {
    * @param stream Stream to concatenate.
    * @returns Concatenated stream.
    */
-  concat(stream: Stream): Stream {
+  concat<T>(stream: Stream<T>): Stream<Type | T> {
     if (this.isEmpty()) {
       return stream;
     }
@@ -110,8 +110,8 @@ class Stream {
    * @param initialValue Initial value.
    * @returns Reduced value.
    */
-  reduce(reducer: (acc: any, item: any) => any, initialValue: any): any {
-    let acc: any = initialValue;
+  reduce<T>(reducer: (acc: T, item: Type) => T, initialValue: T): T {
+    let acc: T = initialValue;
     let stream: Stream = this;
     while (!stream.isEmpty()) {
       acc = reducer(acc, stream.head);
@@ -128,7 +128,7 @@ class Stream {
    * @param step Step value.
    * @returns Stream.
    */
-  static fromRange(start: number, end: number, step: number = 1): Stream {
+  static fromRange(start: number, end: number, step: number = 1): Stream<number> {
     if (start === end) {
       return new Stream(start);
     }
@@ -141,7 +141,7 @@ class Stream {
    * @param array Array.
    * @returns Stream.
    */
-  static fromArray(array: any[]): Stream {
+  static fromArray<T>(array: T[]): Stream<T> {
     if (array.length === 0) {
       return new Stream();
     }

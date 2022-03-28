@@ -1,6 +1,6 @@
 {
   "name": "@davidszell/stream-ts",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A type-safe implementation of streams",
   "keywords": [
     "stream",

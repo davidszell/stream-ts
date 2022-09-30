@@ -3,15 +3,16 @@
 A type-safe implementation of streams in TypeScript 
 
 ## Install
+
 ```sh
 npm install @davidszell/stream-ts
 ```
 
 ## Example
 
-```js
+```ts
 Stream
-  .fromArray[1, 2, 3, 4, 5, 6]
+  .fromArray([1, 2, 3, 4, 5, 6])
   .filter(item => item % 2 === 0)
   .filter(item => item > 3)
   .map(item => item.toSting())

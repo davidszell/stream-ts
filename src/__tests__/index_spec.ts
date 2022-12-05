@@ -93,7 +93,7 @@ describe('Stream', () => {
       expect(filtered.toArray()).toEqual([2]);
     });
 
-    it('returns stream multiple items', () => {
+    it('returns stream with multiple items', () => {
       const stream = Stream.fromArray([1, 2, 3]);
       const filtered = stream.filter(item => item > 1);
       expect(filtered.toArray()).toEqual([2, 3]);
@@ -158,7 +158,7 @@ describe('Stream', () => {
       expect(stream.reduce((acc, item) => acc + item, 0)).toEqual(0);
     });
 
-    it('reduces stream', () => {
+    it('reduces non-empty stream', () => {
       const stream = Stream.fromArray([1, 2, 3]);
       expect(stream.reduce((acc, item) => acc + item, 0)).toEqual(6);
     });
@@ -229,18 +229,18 @@ describe('Stream', () => {
   });
 
   describe('types', () => {
-    it('it is set when created', () => {
+    it('is set when created', () => {
       const stream = new Stream(1);
       expect(typeof stream.first()).toBe('number');
     });
 
-    it('it is overriden when mapped', () => {
+    it('is overridden when mapped', () => {
       const stream = new Stream(1);
       const mapped = stream.map(item => item.toString());
       expect(typeof mapped.first()).toBe('string');
     });
 
-    it('it is unchanged when filtered', () => {
+    it('is unchanged when filtered', () => {
       const stream = Stream.fromArray([1, 2, 3]);
       const filtered = stream.filter(item => item > 1);
       expect(typeof filtered.first()).toEqual(typeof stream.first());
